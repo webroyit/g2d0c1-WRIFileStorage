@@ -1,13 +1,25 @@
 import React, { useState } from 'react'
 import { Alert, Card, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import { useAuth } from '../contexts/AuthContext'
 
 function Dashboard() {
+    const history = useHistory();
+    const { currentUser, logout } = useAuth()
+
     const [error, setError] = useState('')
 
-    const { currentUser } = useAuth()
+    async function handleLogout() {
+        setError('')
+
+        try {
+            await logout()
+            history.push('/login')
+        } catch {
+            setError('Something went wrong when logging out')
+        }
+    }
 
     return (
         <div>
@@ -23,7 +35,7 @@ function Dashboard() {
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">
-                <Button variant="link">
+                <Button variant="link" onClick={handleLogout}>
                     Log Out
                 </Button>
             </div>
