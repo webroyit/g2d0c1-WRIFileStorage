@@ -9,6 +9,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState();
+    const [loading, setLoading] = useState(true);
 
     function signup(email, password) {
         return auth.createUserWithEmailAndPassword(email, password)
@@ -19,6 +20,7 @@ export function AuthProvider({ children }) {
         // This function return a method to unsubscribe from this listener
         const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user)
+            setLoading(false)
         })
 
         // Remove this listener when it is finish
@@ -30,9 +32,10 @@ export function AuthProvider({ children }) {
         signup
     }
 
+    // Send user data only when it is finish getting the data from firebase
     return (
         <AuthContext.Provider value={value}>
-            {children}
+            {!loading && children}
         </AuthContext.Provider>
     )
 }
