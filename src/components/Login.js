@@ -8,14 +8,22 @@ function Login() {
     const emailRef = useRef()
     const passwordRef = useRef()
 
-    const {  } = useAuth()
+    const { login } = useAuth()
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
 
     async function handleSubmit(e) {
         e.preventDefault()
 
+        try{
+            setError('')
+            setLoading(true)
+            await login(emailRef.current.value, passwordRef.current.value)
+        } catch (err) {
+            setError('Something went wrong on logging in')
+        }
         
+        setLoading(false)
     }
 
     return (
