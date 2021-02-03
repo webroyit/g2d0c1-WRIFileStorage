@@ -35,7 +35,7 @@ function Signup() {
 
     return (
         <div>
-            <Card className="mt-4">
+            <Card>
                 <Card.Body>
                     <h2 className="text-center">Sign Up</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
