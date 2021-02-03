@@ -23,6 +23,11 @@ export function AuthProvider({ children }) {
         return auth.signOut()
     }
 
+    function resetPassword(email) {
+        return auth.sendPasswordResetEmail(email)
+    }
+
+
     useEffect(() => {
         // 'onAuthStateChanged' checks if the user is log in or not
         // This function return a method to unsubscribe from this listener
@@ -39,7 +44,8 @@ export function AuthProvider({ children }) {
         currentUser,
         signup,
         login,
-        logout
+        logout,
+        resetPassword
     }
 
     // Send user data only when it is finish getting the data from firebase
