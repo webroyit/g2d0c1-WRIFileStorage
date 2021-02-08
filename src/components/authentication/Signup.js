@@ -2,7 +2,8 @@ import React, { useRef, useState } from 'react'
 import { Form, Alert, Card, Button } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom'
 
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../../contexts/AuthContext'
+import CenteredContainer from './CenteredContainer';
 
 function Signup() {
     const history = useHistory();
@@ -34,7 +35,7 @@ function Signup() {
     }
 
     return (
-        <div>
+        <CenteredContainer>
             <Card>
                 <Card.Body>
                     <h2 className="text-center">Sign Up</h2>
@@ -60,7 +61,7 @@ function Signup() {
             <div className="w-100 text-center mt-2">
                 Already have an account? <Link to="/login">Log In</Link>
             </div>
-        </div>
+        </CenteredContainer>
     )
 }
 

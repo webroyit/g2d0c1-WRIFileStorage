@@ -2,7 +2,8 @@ import React, { useRef, useState } from 'react'
 import { Form, Alert, Card, Button } from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom'
 
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../../contexts/AuthContext'
+import CenteredContainer from './CenteredContainer';
 
 function UpdateProfile() {
     const history = useHistory();
@@ -34,7 +35,7 @@ function UpdateProfile() {
         }
 
         Promise.all(promises).then(() => {
-            history.push('/')
+            history.push('/user')
         }).catch(() => {
             setError('Something went wrong on updating your account')
         }).finally(() => {
@@ -43,7 +44,7 @@ function UpdateProfile() {
     }
 
     return (
-        <div>
+        <CenteredContainer>
             <Card>
                 <Card.Body>
                     <h2 className="text-center">Update Profile</h2>
@@ -67,9 +68,9 @@ function UpdateProfile() {
                 </Card.Body>
             </Card>
             <div className="w-100 text-center mt-2">
-               <Link to="/">Cancel</Link>
+               <Link to="/user">Cancel</Link>
             </div>
-        </div>
+        </CenteredContainer>
     )
 }
 
