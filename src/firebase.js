@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import "firebase/auth";
+import "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyB9HILSQg_Q72kPhq3oUN0qCezMij8Jqkc",
@@ -12,5 +13,14 @@ const firebaseConfig = {
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
+const firestore = firebaseApp.firestore()    // For firebase database
+
+// Acccess only folders and files collection
+export const database = {
+    folders: firestore.collection('folders'),
+    files: firestore.collection('files')
+}
+
 export const auth = firebaseApp.auth();     // For firebase authentication
+
 export default firebaseApp;
