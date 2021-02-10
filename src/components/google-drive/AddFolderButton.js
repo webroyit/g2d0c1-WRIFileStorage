@@ -25,7 +25,8 @@ function AddFolderButton() {
         // Create a folder in the database
         database.folders.add({
             name: name,
-            userId: currentUser.uid
+            userId: currentUser.uid,
+            createdAt: database.getCurrentTimestamp()
         })
 
         setName("")

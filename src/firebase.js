@@ -18,7 +18,8 @@ const firestore = firebaseApp.firestore()    // For firebase database
 // Acccess only folders and files collection
 export const database = {
     folders: firestore.collection('folders'),
-    files: firestore.collection('files')
+    files: firestore.collection('files'),
+    getCurrentTimestamp: firebase.firestore.FieldValue.serverTimestamp
 }
 
 export const auth = firebaseApp.auth();     // For firebase authentication
