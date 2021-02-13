@@ -89,6 +89,7 @@ export function useFolder(folderId = null, folder = null) {
         return database.folders
             .where("parentId", "==", folderId)
             .where("userId", "==", currentUser.uid)
+            // Query requires an index
             .orderBy("createdAt")
             .onSnapshot(snapshot => {
                 dispatch({
