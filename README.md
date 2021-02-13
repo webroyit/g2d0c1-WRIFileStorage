@@ -9,3 +9,4 @@
 - (https://temp-mail.org/en/) for Temporary Email Address.  It provides temporary, secure, anonymous, free, disposable email address.
 - hooks folder for logic code
 - Doing query in firebase requires an index
+- bootstrap "text-truncate" will truncate the text if it too long
