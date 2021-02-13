@@ -1,5 +1,7 @@
 import { useReducer, useEffect } from 'react'
 
+import { database } from '../../firebase'
+
 // This is use to prevent typos
 const ACTIONS = {
     SELECT_FOLDER: 'select-folder',
@@ -51,6 +53,20 @@ export function useFolder(folderId = null, folder = null) {
             })
         }
 
+        database.folders
+            .doc(folderId)
+            .get()
+            .then(doc => {
+                return dispatch({
+                    type: ACTIONS.UPDATE_FOLDER,
+                    payload: { folder: database.formatDoc(doc) }
+                })
+            }).catch(() => {
+                return dispatch({
+                    type: ACTIONS.UPDATE_FOLDER,
+                    payload: { folder: ROOT_FOLDER }
+                })
+            })
     }, [folderId])
 
     return state
