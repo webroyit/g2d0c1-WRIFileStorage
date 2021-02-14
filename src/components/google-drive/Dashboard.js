@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 
 import { useFolder } from '../hooks/useFolder'
 import Navbar from './Navbar'
@@ -10,7 +10,8 @@ import FolderBreadcrumbs from './FolderBreadcrumbs'
 
 function Dashboard() {
     const { folderId } = useParams()
-    const { folder, childFolders } = useFolder(folderId)
+    const { state = {} } = useLocation()
+    const { folder, childFolders } = useFolder(folderId, state.folder)
 
     return (
         <div>
