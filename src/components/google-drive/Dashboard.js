@@ -6,6 +6,7 @@ import { useFolder } from '../hooks/useFolder'
 import Navbar from './Navbar'
 import AddFolderButton from './AddFolderButton'
 import Folder from './Folder'
+import FolderBreadcrumbs from './FolderBreadcrumbs'
 
 function Dashboard() {
     const { folderId } = useParams()
@@ -15,7 +16,10 @@ function Dashboard() {
         <div>
             <Navbar />
             <Container fluid>
-                <AddFolderButton currentFolder={folder} />
+                <div className="d-flex align-items-center">
+                    <FolderBreadcrumbs currentFolder={folder} />
+                    <AddFolderButton currentFolder={folder} />
+                </div>
                 {childFolders.length > 0 && (
                     <div className="d-flex flex-wrap">
                         {childFolders.map(childFolder => (
