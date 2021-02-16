@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
 import { v4 as uuidV4 } from 'uuid'
+import { Toast, ProgressBar } from 'react-bootstrap'
 
 import { database, storage } from '../../firebase'
 import { useAuth } from '../../contexts/AuthContext'
@@ -79,7 +80,22 @@ function AddFileButton({ currentFolder }) {
                     right: '1rem',
                     maxWidth: '250px'
                 }}>
-                    <p>File</p>
+                    {uploadingFiles.map(file => (
+                        <Toast key={file.id}>
+                            <Toast.Header closeButton={file.error} className="text-truncate w-100 d-block">
+                                {file.name}
+                            </Toast.Header>
+                            <Toast.Body>
+                                <ProgressBar
+                                    animated={!file.error}
+                                    variant={file.error ? 'danger' : 'primary'}
+                                    now={file.error ? 100 : file.progress * 100}
+                                    label={
+                                        file.error ? 'Error': `${Math.round(file.progress * 100)}%`
+                                    } />
+                            </Toast.Body>
+                        </Toast>
+                    ))}
                 </div>,
                 // Rendered this code in the body
                 document.body
