@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
 
-import { storage } from '../../firebase'
+import { database, storage } from '../../firebase'
 import { useAuth } from '../../contexts/AuthContext'
 import { ROOT_FOLDER } from '../hooks/useFolder'
 
@@ -24,6 +24,27 @@ function AddFileButton({ currentFolder }) {
         const uploadTask = storage
             .ref(`/files/${currentUser.uid}/${filePath}`)
             .put(file)
+
+       
+        uploadTask.on('state_changed', snapshot => {
+            // Get called repeatedly(For upload progress)
+        }, () => {
+            // For error
+        }, () => {
+            // After the upload is complete
+
+            // Get the URL of the image that was uploaded to firebase storage
+            uploadTask.snapshot.ref.getDownloadURL().then(url => {
+                // Save the url on firebase database
+                database.files.add({
+                   url: url,
+                   name: file.name,
+                   createAt:database.getCurrentTimestamp(),
+                   folderId: currentFolder.id,
+                   userId: currentUser.uid
+               })
+            })
+        })
     }
 
     return (
