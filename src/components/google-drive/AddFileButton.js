@@ -4,6 +4,7 @@ import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
 
 import { storage } from '../../firebase'
 import { useAuth } from '../../contexts/AuthContext'
+import { ROOT_FOLDER } from '../hooks/useFolder'
 
 function AddFileButton({ currentFolder }) {
     const { currentUser } = useAuth()
@@ -15,9 +16,9 @@ function AddFileButton({ currentFolder }) {
         if (currentFolder == null || file == null) return
 
         // Set the folder and file path
-        const filePath = currentFolder.path.length > 0
+        const filePath = currentFolder === ROOT_FOLDER
             ? `${currentFolder.path.join('/')}/${file.name}`
-            : file.name
+            : `${currentFolder.path.join('/')}/${currentFolder.name}/${file.name}`
 
         // Save the file on firebase storage
         const uploadTask = storage
