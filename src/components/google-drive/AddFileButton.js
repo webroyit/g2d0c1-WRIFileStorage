@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons'
+import { v4 as uuidV4 } from 'uuid'
 
 import { database, storage } from '../../firebase'
 import { useAuth } from '../../contexts/AuthContext'
 import { ROOT_FOLDER } from '../hooks/useFolder'
 
 function AddFileButton({ currentFolder }) {
+    const [uploadingFiles, setUploadingFiles] = useState([])
     const { currentUser } = useAuth()
 
     function handleUpload(e) {
@@ -14,6 +17,19 @@ function AddFileButton({ currentFolder }) {
         const file = e.target.files[0]
 
         if (currentFolder == null || file == null) return
+
+        // Generate unique identifiers
+        const id = uuidV4(0)
+
+        setUploadingFiles(prevUploadingFiles => [
+            ...prevUploadingFiles,
+            {
+                id: id,
+                name: file.name,
+                progress: 0,
+                error: false
+            }
+        ])
 
         // Set the folder and file path
         const filePath = currentFolder === ROOT_FOLDER
@@ -48,13 +64,27 @@ function AddFileButton({ currentFolder }) {
     }
 
     return (
-        <label className="btn btn-outline-success btn-sm m-0 mr-2">
-            <FontAwesomeIcon icon={faFileUpload} />
-            <input
-                type="file"
-                onChange={handleUpload}
-                style={{ opacity: 0, position: "absolute", left: "-9999px" }}/>
-        </label>
+        <>
+            <label className="btn btn-outline-success btn-sm m-0 mr-2">
+                <FontAwesomeIcon icon={faFileUpload} />
+                <input
+                    type="file"
+                    onChange={handleUpload}
+                    style={{ opacity: 0, position: "absolute", left: "-9999px" }}/>
+            </label>
+            {uploadingFiles.length > 0 && ReactDOM.createPortal(
+                <div style={{
+                    position: 'absolute',
+                    bottom: '1rem',
+                    right: '1rem',
+                    maxWidth: '250px'
+                }}>
+                    <p>File</p>
+                </div>,
+                // Rendered this code in the body
+                document.body
+            )}
+        </>
     )
 }
 

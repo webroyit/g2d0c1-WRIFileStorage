@@ -11,6 +11,7 @@
 - Doing query in firebase requires an index
 - bootstrap "text-truncate" will truncate the text if it too long
 - `useLocation` to get the state from react-router
+- `ReactDOM.createPortal` allows you to create code that is rendered outside of the current component
 
 ## Firebase Rules
 - For firebase security on firebase console
