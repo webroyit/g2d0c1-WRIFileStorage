@@ -84,14 +84,28 @@ function AddFileButton({ currentFolder }) {
 
             // Get the URL of the image that was uploaded to firebase storage
             uploadTask.snapshot.ref.getDownloadURL().then(url => {
-                // Save the url on firebase database
-                database.files.add({
-                   url: url,
-                   name: file.name,
-                   createAt:database.getCurrentTimestamp(),
-                   folderId: currentFolder.id,
-                   userId: currentUser.uid
-               })
+                database.files
+                    .where("name", "==", file.name)
+                    .where("userId", "==", currentUser.uid)
+                    .where("folderId", "==", currentFolder.id)
+                    .get()
+                    .then(existingFiles => {
+                        // Replace an url on firebase database
+                        const existingFile = existingFiles.docs[0]
+
+                        if (existingFile) {
+                            existingFile.ref.update({ url: url })
+                        } else {
+                            // Save the url on firebase database
+                            database.files.add({
+                                url: url,
+                                name: file.name,
+                                createAt:database.getCurrentTimestamp(),
+                                folderId: currentFolder.id,
+                                userId: currentUser.uid
+                            })
+                        }
+                    })
             })
         })
     }

@@ -30,9 +30,14 @@ service cloud.firestore {
       	// return true is the data belong to the user
       	return request.auth.uid == data.userId
       }
+
+      function notUpating(field) {
+      	return !(field in request.resource.data) || resource.data[field] == request.resource.data[field]
+      }
       
       allow read: if authed() && matchesUser(resource.data)
       allow create: if authed() && matchesUser(request.resource.data)
+      allow update: if authed() && matchesUser(resource.data) && notUpating("userId")
     }
   }
 }
