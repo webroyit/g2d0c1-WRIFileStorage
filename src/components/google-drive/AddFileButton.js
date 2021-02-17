@@ -45,10 +45,31 @@ function AddFileButton({ currentFolder }) {
        
         uploadTask.on('state_changed', snapshot => {
             // Get called repeatedly(For upload progress)
+
+            // Get the percentage
+            const progress = snapshot.bytesTransferred / snapshot.totalBytes
+
+            // Show the percentage of the file being uploading
+            setUploadingFiles(prevUploadingFiles => {
+                return prevUploadingFiles.map(uploadFile => {
+                    if (uploadFile.id === id) {
+                        return { ...uploadFile, progress: progress }
+                    }
+
+                    return uploadFile
+                })
+            })
         }, () => {
             // For error
         }, () => {
             // After the upload is complete
+
+            // Remove the bootstrap toast
+            setUploadingFiles(prevUploadingFiles => {
+                return prevUploadingFiles.filter(uploadFile => {
+                    return uploadFile.id !== id
+                })
+            })
 
             // Get the URL of the image that was uploaded to firebase storage
             uploadTask.snapshot.ref.getDownloadURL().then(url => {
