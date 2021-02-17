@@ -61,6 +61,17 @@ function AddFileButton({ currentFolder }) {
             })
         }, () => {
             // For error
+
+            // Display error
+            setUploadingFiles(prevUploadingFiles => {
+                return prevUploadingFiles.map(uploadFile => {
+                    if (uploadFile.id === id) {
+                        return { ...uploadFile, error: true }
+                    }
+
+                    return uploadFile
+                })
+            })
         }, () => {
             // After the upload is complete
 
@@ -102,7 +113,13 @@ function AddFileButton({ currentFolder }) {
                     maxWidth: '250px'
                 }}>
                     {uploadingFiles.map(file => (
-                        <Toast key={file.id}>
+                        <Toast key={file.id} onClose={() => {
+                            setUploadingFiles(prevUploadingFiles => {
+                                return prevUploadingFiles.filter(uploadFile => {
+                                    return uploadFile.id !== file.id
+                                })
+                            })
+                        }}>
                             <Toast.Header closeButton={file.error} className="text-truncate w-100 d-block">
                                 {file.name}
                             </Toast.Header>
